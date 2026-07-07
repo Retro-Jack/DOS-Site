@@ -1,0 +1,82 @@
+10 ' ************
+20 ' *          *
+30 ' * Skydiver *
+40 ' *          *
+50 ' ************
+55 ' ** Set Random Start Point ***
+60 FOR N=1 TO VAL(RIGHT$(TIME$,2))
+70 DU=RND(1)
+80 NEXT N
+85 ' *** Instructions ***
+90 CLS:PRINT:PRINT
+100 PRINTTAB(12)"Instructions?"
+110 PRINT:PRINTTAB(16)"Y/N"
+120 A$=INKEY$:IF A$=""GOTO120
+130 IF A$="Y" OR A$="y" GOTO140ELSE GOTO220
+140 CLS:PRINT
+150 PRINTTAB(6)"Difficulty level sets size"
+160 PRINTTAB(6)"of the landing pad.  Hit any"
+170 PRINTTAB(6)"key to release chute.  You get"
+180 PRINTTAB(6)"10 points for a safe landing."
+190 PRINTTAB(6)"You lose one for a crash."
+200 PRINT:PRINTTAB(9)"== Hit any key =="
+210 A$=INKEY$:IF A$="" GOTO210
+215 ' *** Set Size of Pad ***
+220 CLS:PRINT
+230 PRINTTAB(5)"Enter difficulty level:"
+240 PRINT:PRINTTAB(6)"[1] Hard to [4] Easy"
+250 A$=INKEY$:IF A$="" GOTO250
+260 DF=VAL(A$)
+270 IF DF>4 GOTO250
+280 T=INT(RND(1)*30)+285
+285 ' *** Start Round ***
+290 CLS
+300 A=2
+310 FOR N=1 TO DF
+320 PRINT@T+N,CHR$(239);
+330 NEXT N
+340 PARA$=CHR$(159)
+350 PLANE$=CHR$(62)
+360 PRINT@28,"Score :";SC;
+370 A$=INKEY$
+380 PRINT@A,PLANE$;
+390 PRINT@A-1,CHR$(32);
+400 A=A+1
+410 FOR N=1 TO 100:NEXT N
+420 IF A$=""GOTO360
+430 PRINT@A-1,CHR$(32);
+440 PRINT@A,PARA$;
+450 FOR N=1 TO 500:NEXT N
+460 PRINT@A,CHR$(32);
+470 A=A+41
+480 IF A>320 THEN A=A-41:GOTO590
+490 IF PEEK(A-512)=239 GOTO510
+500 GOTO440
+505 ' *** Landed on Pad ***
+510 CLS:PRINT
+520 PRINTTAB(12)"Nice landing!"
+530 PRINTTAB(12)"You get ten points."
+540 PRINT
+550 PRINTTAB(8)"Any key=go, Q=menu"
+560 A$=INKEY$:IF A$=""GOTO560
+565 IF A$="Q" OR A$="q" THEN MENU
+570 SC=SC+10
+580 GOTO280
+585 ' *** Missed Pad ***
+590 FOR N=1 TO 50
+600 PRINT@A,CHR$(190);
+610 GOSUB730
+620 PRINT@A,CHR$(199);
+630 NEXT N
+640 CLS:PRINT
+650 PRINTTAB(12)"You crashed!"
+660 PRINT
+670 PRINTTAB(12)"You lose a point."
+680 PRINT
+690 PRINTTAB(8)"Any key=go, Q=menu"
+700 SC=SC-1
+710 A$=INKEY$:IF A$=""GOTO710
+715 IF A$="Q" OR A$="q" THEN MENU
+720 GOTO280
+725 ' *** Sound ***
+730 SOUND 7000,1:RETURN

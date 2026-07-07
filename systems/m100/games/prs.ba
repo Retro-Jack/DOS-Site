@@ -1,0 +1,126 @@
+10 ' *************************
+20 ' *                       *
+30 ' * Paper, Rock, Scissors *
+40 ' *                       *
+50 ' *************************
+55 ' *** Instructions ***
+60 CLS:PRINT:PRINT
+70 PRINTTAB(2)"Do you want instructions?"
+80 PRINTTAB(12)"(Y/N)"
+90 A$=INKEY$:IF A$=""GOTO90
+100 IF A$="Y" OR A$="y" GOTO120
+110 GOTO170
+120 CLS:PRINT:PRINT
+130 PRINTTAB(2)"Try to beat the computer to"
+140 PRINTTAB(2)"fifteen points by selecting"
+150 PRINTTAB(2)"paper, rock, or scissors wisely."
+160 PRINT:PRINTTAB(14)"Good luck!"
+165 ' *** Set random seed ***
+170 FOR N=1 TO VAL(RIGHT$(TIME$,2))
+180 DUM=RND(1)
+190 NEXT N
+200 PRINT:GOTO220
+210 CLS:PRINT:PRINT
+220 PRINTTAB(5)"== Hit any key to continue. =="
+225 ' *** Display Choices ***
+230 A$=INKEY$:IF A$=""GOTO230
+240 IF CP>14 OR PP>14 GOTO1010
+250 CLS:PRINT:PRINT
+260 PRINT:PRINTTAB(5)"You:";PP;TAB(20);"Computer:";CP
+270 PRINT:PRINTTAB(8)"[P]aper"
+280 PRINTTAB(8)"[R]ock"
+290 PRINTTAB(8)"[S]cissors"
+300 PRINT:PRINTTAB(5)"Select:";
+310 A$=INKEY$:IF A$=""GOTO310
+320 IF A$="P"ORA$="p"ORA$="R"ORA$="r"OR A$="S"OR A$="s"GOTO340
+330 GOTO310
+335 ' *** Computer makes choice ***
+340 CH=INT(RND(1)*3)+1
+350 ON CH GOTO360,580,800
+355 ' *** Computer chose Paper... ***
+360 CLS:PRINT:PRINT
+370 PRINTTAB(5)"Computer chose Paper"
+380 PRINTTAB(5)"You chose ";
+390 IF A$="P" OR A$="p" GOTO420
+400 IF A$="R" OR A$="r" GOTO460
+410 IF A$="S" OR A$="s" GOTO520
+415 ' *** ...and Player chose Paper ***
+420 PRINTTAB(5)"Paper."
+430 PRINTTAB(5)"Tie. No points."
+440 PRINT
+450 GOTO220
+455 ' *** ...and Player chose Rock ***
+460 PRINTTAB(5)"Rock."
+470 PRINTTAB(5)"Paper wraps Rock."
+480 PRINTTAB(5)"Point for Computer."
+490 CP=CP+1
+500 PRINT
+510 GOTO220
+515 ' *** ...and Player chose Scissors ***
+520 PRINTTAB(5)"Scissors."
+530 PRINTTAB(5)"Scissors cut Paper."
+540 PRINTTAB(5)"You get one point."
+550 PRINT
+560 PP=PP+1
+570 GOTO220
+575 ' *** Computer chose Rock... ***
+580 CLS:PRINT:PRINT
+590 PRINTTAB(5)"Computer chose Rock"
+600 PRINTTAB(5)"You chose ";
+610 IF A$="P" OR A$="p" GOTO640
+620 IF A$="R" OR A$="r" GOTO700
+630 IF A$="S" OR A$="s" GOTO740
+635 ' *** ...and Player chose Paper ***
+640 PRINT"Paper"
+650 PRINTTAB(5)"Paper wraps Rock."
+660 PRINTTAB(5)"You get one point."
+670 PP=PP+1
+680 PRINT
+690 GOTO220
+695 ' *** ...and Player chose Rock ***
+700 PRINT"Rock"
+710 PRINTTAB(5)"Tie. No points."
+720 PRINT
+730 GOTO220
+735 ' *** ...and Player chose Scissors ***
+740 PRINT"Scissors"
+750 PRINTTAB(5)"Rock breaks Scissors."
+760 PRINTTAB(5)"Computer gets one point."
+770 CP=CP+1
+780 PRINT
+790 GOTO220
+795 ' *** Computer chose Scissors... ***
+800 CLS:PRINT:PRINT
+810 PRINTTAB(5)"Computer chose Scissors"
+820 PRINTTAB(5)"You chose ";
+830 IF A$="P" OR A$="p" GOTO860
+840 IF A$="R" OR A$="r" GOTO920
+850 IF A$="S" OR A$="s" GOTO980
+855 ' *** ...and Player chose Paper ***
+860 PRINT"Paper."
+870 PRINTTAB(5)"Scissors cut Paper"
+880 PRINTTAB(5)"Point for computer."
+890 CP=CP+1
+900 PRINT
+910 GOTO220
+915 ' *** ...and Player chose Rock ***
+920 PRINT"Rock."
+930 PRINTTAB(5)"Rock breaks Scissors."
+940 PRINTTAB(5)"Point for you."
+950 PP=PP+1
+960 PRINT
+970 GOTO220
+975 ' *** ...and Player chose Scissors ***
+980 PRINT"Scissors."
+990 PRINTTAB(5)"Tie. No points."
+1000 GOTO220
+1005 ' *** End of Game ***
+1010 CLS:PRINT:PRINT
+1020 PRINTTAB(2)"Fifteen points achieved!"
+1030 IF CP>14 THEN PRINTTAB(2)"Computer wins!"
+1040 IF PP>14 THEN PRINTTAB(2)"Human wins!
+1050 PRINT:PRINT
+1060 PRINTTAB(8)"Play again?"
+1070 A$=INKEY$:IF A$=""GOTO1070
+1080 IF A$="Y" OR A$="y" THEN RUN
+1090 MENU

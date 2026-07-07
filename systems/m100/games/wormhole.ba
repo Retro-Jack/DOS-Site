@@ -1,0 +1,77 @@
+10 ' *************
+20 ' *           *
+30 ' * Worm Hole *
+40 ' *           *
+50 ' *************
+55 ' *** Instructions ***
+60 T$="Instructions?"
+70 CLS:PRINT
+80 PRINTTAB(11)"** Worm Hole **"
+90 FOR N=92 TO 104
+100 PRINT@N,"*";
+110 FOR N1=1 TO 10:NEXT N1
+120 NEXT N
+130 FOR N=1 TO 500:NEXT N
+140 FOR N=92 TO 104
+150 PRINT@N,MID$(T$,N-91,1);
+160 FOR N1=1 TO 100:NEXT N1
+170 NEXT N
+180 PRINT:PRINT:PRINTTAB(15)"(Y/N)"
+190 A$=INKEY$:IF A$=""GOTO190
+200 IF A$="Y" OR A$="y" GOTO210ELSE GOTO270
+210 CLS:PRINT:PRINT
+220 PRINTTAB(2)"Use arrow keys to avoid obstacles"
+230 PRINTTAB(2)"and stay alive as long as possible."
+240 PRINT:PRINT
+250 PRINTTAB(10)"== Hit any key =="
+260 A$=INKEY$:IF A$=""GOTO260
+265 ' *** Set parameters ***
+270 CLS:PRINT:PRINT
+280 PRINTTAB(8)"Enter speed desired:"
+290 PRINT
+300 PRINTTAB(6)"[1] (Fast) to [9] (Slow)"
+310 A$=INKEY$:IF A$=""GOTO310
+320 DL=VAL(A$)*15
+330 CLS:PRINT:PRINT
+340 PRINTTAB(8)"Enter difficulty desired:"
+350 PRINT:PRINTTAB(8)"[1] (Easy) to [9] (Hard)"
+360 A$=INKEY$:IF A$=""GOTO360
+370 D=VAL(A$)
+380 DELTA=1
+385 ' *** Randomize, and set up screen ***
+390 FOR N=1 TO VAL(RIGHT$(TIME$,2))
+400 DU=RND(1)
+410 NEXT N
+420 B1=1
+430 C$="*"
+440 CLS
+450 FOR N=1 TO D*2.5
+460 PRINT@RND(1)*320,CHR$(239);
+470 NEXT N
+475 ' *** Begin Play ***
+480 A$=INKEY$
+490 B1=B1+DELTA
+500 IF B1<1 THEN B1=B1+DELTA
+510 IF B1>320 THEN B1=B1-DELTA
+520 IF PEEK(B1-512)<>32 GOTO650
+530 PRINT @B1,C$;
+540 PRINT@RND(1)*300,CHR$(32);
+550 FOR N=1 TO DL:NEXT N
+560 PT=PT+1
+570 IF A$=""GOTO480
+580 A=ASC(A$)
+590 IF A<28 OR A>31 GOTO570
+600 ON A-27 GOTO610,620,630,640
+605 ' *** Move right,left, up or down ***
+610 DELTA=+1:GOTO480
+620 DELTA=-1:GOTO480
+630 DELTA=-40:GOTO480
+640 DELTA=40:GOTO480
+645 ' *** Crash! ***
+650 CLS:PRINT:PRINT
+660 PRINTTAB(10)"You crashed!!"
+670 PRINT:PRINTTAB(4)"You finished with "PT;" points."
+680 PRINT:PRINTTAB(11)"Play again?"
+690 PRINT:PRINTTAB(14)"(Y/N)"
+700 A$=INKEY$:IF A$=""GOTO700
+710 IF A$="Y" OR A$="y" THEN RUN ELSE MENU

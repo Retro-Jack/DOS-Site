@@ -1,0 +1,83 @@
+10 ' *********
+20 ' *       *
+30 ' * Slots *
+40 ' *       *
+50 ' *********
+55 ' *** Set Random Start Point ***
+60 FOR N=1 TO VAL(RIGHT$(TIME$,2))
+70 DU=RND(1)
+80 NEXT N
+90 F$="$$####"
+100 CASH=200
+110 LEMN$="^^LEMON^^"
+120 CHER$="%%CHERRY%%"
+130 OGE$="**ORANGE**"
+135 ' *** Instructions ***
+140 CLS:PRINT
+150 PRINTTAB(10)"Instructions?"
+160 PRINT:PRINTTAB(14)"Y/N"
+170 A$=INKEY$:IF A$=""GOTO 170
+180 IF A$="Y" OR A$="y" GOTO 190 ELSE GOTO 250
+190 CLS
+200 PRINT
+210 PRINTTAB(2)"Drop in silver dollars.  You win"
+220 PRINTTAB(2)"$20 each time you get three lemons,"
+230 PRINTTAB(2)"three cherries, or three oranges."
+240 PRINTTAB(2)"One of each wins $5.  Others lose."
+250 PRINTTAB(8)"You start with $200"
+260 PRINT:PRINTTAB(9)"== Hit any key =="
+270 A$=INKEY$:IF A$=""GOTO 270
+275 ' *** Start Round ***
+280 C=0:L=0:O1=0
+290 CLS:PRINT:PRINT:PRINT
+300 PRINTTAB(4);
+310 FOR I=1 TO 3
+320 FOR DELAY=1 TO 250
+330 NEXT DELAY
+335 ' *** Choose Fruit ***
+340 N=INT(RND(1)*3)+1
+350 ON N GOTO 360,390,420
+360 PRINT CHERY$;" ";
+370 C=C+1
+380 GOTO 440
+390 PRINT LEMN$;" ";
+400 L=L+1
+410 GOTO 440
+420 PRINT OGE$;" ";
+430 O1=O1+1
+440 NEXT I
+450 FOR DELAY=1 TO 150
+460 NEXT DELAY
+470 IF C=3 OR L=3 OR O1=3 GOTO 590
+480 IF C=1 AND L=1 AND O1=1 GOTO 500
+490 GOTO 530
+495 ' *** Won $5.00 ***
+500 PRINT:PRINTTAB(9)"You won $5.00!!"
+510 CASH=CASH+5
+520 GOTO 610
+525 ' *** Lost Bet ***
+530 PRINT:PRINT:PRINT
+540 PRINTTAB(6)"Oops. You lost your dollar"
+550 CASH=CASH-1
+560 PRINT
+570 IF CASH=0 GOTO 660
+580 GOTO 610
+585 ' *** Won $20.00 ***
+590 PRINT:PRINTTAB(9)"You won $20.00!!"
+600 CASH=CASH+10
+610 PRINTTAB(9)"You now have";
+620 PRINT USING F$;CASH
+630 PRINTTAB(9)"== Hit any key =="
+640 A$=INKEY$:IF A$=""GOTO 640
+650 GOTO 280
+655 ' *** Went Bankrupt ***
+660 CLS:PRINT
+670 PRINTTAB(10)"You are bankrupt!"
+680 PRINTTAB(10)"Sorry about that."
+690 PRINT
+700 PRINTTAB(12)"Another game?"
+710 PRINT
+720 PRINTTAB(16)"Y/N"
+730 A$=INKEY$:IF A$=""GOTO 730
+740 IF A$="Y" OR A$="y" THEN RUN
+750 MENU

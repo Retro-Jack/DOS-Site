@@ -1,0 +1,107 @@
+10 ' ******************
+20 ' *                *
+30 ' * Invisible Maze *
+40 ' *                *
+50 ' ******************
+60 '
+70 DIM MZ(320)
+80 X=239
+85 ' *** Instructions ***
+90 CLS:PRINT
+100 PRINTTAB(2)"Invisible Maze"
+110 PRINT:PRINTTAB(2)"Do you want instructions?"
+120 PRINT:PRINTTAB(8)"(Y/N)"
+130 A$=INKEY$:IF A$=""GOTO 130
+140 IF A$="Y" OR A$="y" GOTO 160
+150 GOTO 230
+160 CLS:PRINT:PRINT
+170 PRINTTAB(8)"== Invisible Maze =="
+180 PRINT:PRINTTAB(2)"Use arrow keys to move cursor to"
+190 PRINTTAB(2)"right side of screen.  To peek at"
+200 PRINTTAB(2)"Maze, hit  ";CHR$(34);"D";CHR$(34);"  key.  Hit ";CHR$(34);"Q";CHR$(34)" to quit."
+210 PRINT:PRINTTAB(6)"== Hit any key to play =="
+220 A$=INKEY$:IF A$=""GOTO 220
+225 ' *** Enter number of "walls" desired ***
+230 CLS:PRINT:PRINT
+240 PRINTTAB(2)"Enter difficulty level:":PRINT
+250 PRINTTAB(2)"[1] (Easy) though [9] (Hard)"
+260 A$=INKEY$:IF A$="" GOTO 260
+270 NB=VAL(A$)*10
+280 CLS:PRINT@90,"Preparing maze."
+290 PRINT@130,"Hold on."
+295 ' *** Set random seed ***
+300 FOR N=1 TO VAL(RIGHT$(TIME$,2))
+310 DU=RND(1)
+320 NEXT N
+325 ' *** Set up Maze ***
+330 FOR N=1 TO NB
+340 P=INT(RND(1)*320)
+350 IF MZ(P)=1 GOTO 340
+360 MZ(P)=1
+370 NEXT N
+380 CLS
+390 B1=1:P$=TIME$
+400 PRINT@B1,"*";
+405 ' *** Check for keyboard input ***
+410 A$=INKEY$:IF A$=""GOTO 410
+420 IF A$="D" OR A$="d" GOTO 660
+430 IF A$="Q" OR A$="q" THEN MENU
+440 A=ASC(A$)
+450 IF A<28 OR A>31 GOTO 410
+460 ON A-27 GOTO 500,540,580,620
+465 ' *** If Right Side of Screen Reached, You won. ***
+470 IF B1 MOD 40=0 THEN GOTO 730
+480 PRINT @B1,"*";
+490 GOSUB 870:GOTO 410
+495 ' *** Cursor Right ***
+500 IF MZ(B1+1)=1 THEN GOSUB 890:GOTO 410
+510 B1=B1+1:IF B1+1>320 THEN B1=320
+520 PRINT@B1-1," ";
+530 GOTO 470
+535 ' *** Cursor Left ***
+540 IF MZ(B1-1)=1 THEN GOSUB 890:GOTO 410
+550 B1=B1-1:IF B1<1 THEN B1=1
+560 PRINT@B1+1," ";
+570 GOTO 470
+575 ' *** Cursor Up ***
+580 B1=B1-40:IF B1<1 THEN B1=B1+40:GOTO 470
+590 IF MZ(B1)=1 THEN B1=B1+40:GOSUB 890:GOTO 410
+600 PRINT@B1+40," ";
+610 GOTO 470
+615 ' *** Cursor Down ***
+620 B1=B1+40:IF B1>320 THEN B1=B1-40:GOTO 470
+630 IF MZ(B1)=1 THEN B1=B1-40:GOSUB 890:GOTO 410
+640 PRINT @B1-40," ";
+650 GOTO 470
+655 ' *** Display Maze ***
+660 FOR N=1 TO 317
+670 IF MZ(N)=1 THEN PRINT@N,CHR$(X);
+680 NEXT N
+690 A$=INKEY$:IF A$=""GOTO 690
+700 CLS
+710 PRINT@B1,"*";
+720 GOTO 410
+725 ' *** Game Won ***
+730 PRINT@131,"== You win!!! =="
+740 SM=VAL(MID$(P$,4,2))
+750 SS=VAL(RIGHT$(P$,2))
+760 SH=VAL(LEFT$(P$,2))
+770 FH=VAL(LEFT$(TIME$,2))
+780 FM=VAL(MID$(TIME$,4,2))
+790 FS=VAL(RIGHT$(TIME$,2))
+800 S1=SS+SM*60+SH*3600
+810 S2=FS+FM*60+FH*3600
+820 DF=S2-S1:DM=INT(DF/60):DS=DF-DM*60
+830 PRINT:PRINTTAB(2)"IT TOOK YOU ";DM;" MIN. AND ";DS;
+840 PRINT " SECONDS TO FINISH."
+850 INPUT A$
+860 RUN
+865 ' *** Sound Routine ***
+870 SOUND 12000,2
+880 RETURN
+885 ' *** Collision Sound ***
+890 FOR Q=1 TO 10
+900 Z=RND(1)*14000
+910 SOUND Z,2
+920 NEXT Q
+930 RETURN

@@ -1,0 +1,77 @@
+10 ' ***************
+20 ' *             *
+30 ' * Codebreaker *
+40 ' *             *
+50 ' ***************
+55 ' *** Instructions ***
+60 CLS:PRINT
+70 PRINTTAB(12)CHR$(27);"p";"Codebreaker"
+80 PRINTCHR$(27)"q":PRINTTAB(12)"Instructions?"
+90 PRINT:PRINTTAB(16)"Y/N"
+100 A$=INKEY$:IF A$=""GOTO 100
+110 IF A$="Y" OR A$="y" GOTO 120 ELSE GOTO 200
+120 CLS:PRINT
+130 PRINT:PRINTTAB(2)"Try to guess the computer's 4-letter"
+140 PRINTTAB(2)"Code in fewer than 8 guesses.  Code"
+150 PRINTTAB(2)"uses";CHR$(34);"ABCDE.";CHR$(34);:PRINTTAB(2)"A ";CHR$(34);CHR$(171);CHR$(34);" indicates the"
+160 PRINTTAB(2)"right letter in right position. A ";CHR$(34);"P";CHR$(34)
+170 PRINTTAB(2)"indicates right letter,wrong position."
+180 PRINTTAB(12)"== Hit any key =="
+190 A$=INKEY$:IF A$="" GOTO 190
+195 ' *** Set random start point ***
+200 FOR N=1 TO VAL(RIGHT$(TIME$,2))
+210 DU=RND(1)
+220 NEXT N
+230 CO=171:PO=80
+240 CLS
+250 C$="":G$=""
+255 ' *** Choose Secret  Code ***
+260 FOR N=1 TO 4
+270 C=INT(RND(1)*5)+1
+280 C$=C$+CHR$(C+64)
+290 NEXT N
+300 T$=C$
+305 ' *** Get Player Guess ***
+310 PRINTTAB(2)"Guess:"
+320 PRINTTAB(8)"";
+330 A$=INKEY$:IF A$=""GOTO 330
+340 A=ASC(A$)
+350 IF A=65 OR A=66 OR A=67 OR A=68 OR A=69 OR A=97 OR A=98 OR A=99 OR A=100 OR A=101 GOTO 370
+360 GOTO 320
+370 IF A>96 THEN A=A-32
+380 G$=G$+CHR$(A)
+390 PRINT CHR$(A);
+400 IF LEN(G$)=4 GOTO 420
+410 GOTO 320
+415 ' *** Check for Right Letter, Position ***
+420 PRINTTAB(16)"";
+430 FOR N=1 TO 4
+440 IF MID$(G$,N,1)=MID$(T$,N,1)THEN R$=R$+CHR$(CO):MID$(G$,N,1)="0":MID$(T$,N,1)="1"
+450 NEXT N
+455 ' *** Check for Right Letter, Wrong Position ***
+460 FOR N=1 TO 4
+470 P$=MID$(T$,N,1)
+480 I=INSTR(G$,P$):IF I=0 GOTO 510
+490 R$=R$+CHR$(PO)
+500 MID$(G$,I,1)="0"
+510 NEXT N
+520 TURN=TURN+1
+530 IF R$="" THEN R$="----"
+540 PRINT R$
+550 IF R$=STRING$(4,CO) GOTO 610
+560 IF TURN=8 GOTO 630
+570 G$=""
+580 R$=""
+590 T$=C$
+600 GOTO 320
+605 ' *** Code Guessed ***
+610 PRINT:PRINTTAB(2)"Correct, in ";TURN;" guesses."
+620 PRINT:GOTO 660
+625 ' *** Code Not Guessed ***
+630 PRINT
+640 PRINTTAB(2)"Sorry, but you had your eight guesses!"
+650 PRINT:PRINTTAB(2)"Correct code was:";C$
+660 PRINT:PRINTTAB(2)"Play again?"
+670 PRINTTAB(10)"(Y/N)"
+680 A$=INKEY$:IF A$=""GOTO 680
+690 IF A$="Y" OR A$="y" THEN RUN ELSE MENU
